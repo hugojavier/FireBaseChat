@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         fotoPerfil = (CircleImageView) findViewById(R.id.fotoPerfil);
         nombre = (TextView) findViewById(R.id.nombre);
@@ -103,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Regresaralogin();
+
+            }
+        });
+
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -152,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     Uri u = taskSnapshot.getDownloadUrl();
                     MensajeEnviar m = new MensajeEnviar("Hugo te ha enviado una foto",u.toString(),nombre.getText().toString(),fotoPerfilCadena,"2",ServerValue.TIMESTAMP);
                     databaseReference.push().setValue(m);
+                    setScrollbar();
                 }
             });
         }else if(requestCode == PHOTO_PERFIL && resultCode == RESULT_OK){
@@ -163,11 +174,16 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri u = taskSnapshot.getDownloadUrl();
                     fotoPerfilCadena = u.toString();
-                    MensajeEnviar m = new MensajeEnviar("Hugo ha actualizado su foto de perfil",u.toString(),nombre.getText().toString(),fotoPerfilCadena,"2",ServerValue.TIMESTAMP);
-                    databaseReference.push().setValue(m);
                     Glide.with(MainActivity.this).load(u.toString()).into(fotoPerfil);
                 }
             });
         }
+
+    }
+
+    public void Regresaralogin() {
+        Intent i = new Intent(this, Login.class);
+        startActivity(i);
+
     }
 }
