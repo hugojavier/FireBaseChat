@@ -107,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 MensajeRecibir m = dataSnapshot.getValue(MensajeRecibir.class);
                 adapter.addMensaje(m);
+
+
             }
 
             @Override

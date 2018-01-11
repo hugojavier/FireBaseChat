@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-    
+
 
 public class HolderMensaje extends RecyclerView.ViewHolder {
 
